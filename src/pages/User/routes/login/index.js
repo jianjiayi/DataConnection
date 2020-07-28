@@ -3,7 +3,7 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-01 15:51:25
- * @LastEditTime: 2020-07-23 17:00:13
+ * @LastEditTime: 2020-07-28 14:53:33
  */ 
 import React from 'react';
 import { connect } from 'dva';
@@ -80,15 +80,15 @@ function Login(props) {
                   />,
                 )}
               </Form.Item>
-              <div className={styles.item}>
+              {/* <div className={styles.item}>
                   {getFieldDecorator('remember', {
                   valuePropName: 'checked',
                   initialValue: true,
                 })(<Checkbox>记住密码</Checkbox>)}
                 <Link to="/">忘记密码？</Link>
-              </div>
+              </div> */}
               <Button className={`${styles.login_button} ${styles.item_button}`} type="primary" htmlType="submit"> 登录</Button>
-              <Button className={styles.item_button}> 注册</Button>
+              {/* <Button className={styles.item_button}> 注册</Button> */}
             </Form>
           </div>
           <div className={styles.footer}>

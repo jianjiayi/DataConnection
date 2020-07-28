@@ -3,19 +3,11 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-29 15:06:52
- * @LastEditTime: 2020-07-21 17:27:27
+ * @LastEditTime: 2020-07-28 09:56:35
  */ 
  
-const AuditQueue = require('../pages/AuditQueue/router');
-const AuditSearch = require('../pages/AuditSearch/router');
-const AuditSettings = require('../pages/AuditSettings/router');
-const AuditStatistics = require('../pages/AuditStatistics/router');
-const RightsManage = require('../pages/AuditRights/router');
+const AllocationMethod = require('../pages/AllocationMethod/router');
 
 exports.sliderMenus = [
-  ...AuditSettings,
-  ...AuditQueue,
-  ...AuditSearch,
-  ...AuditStatistics,
-  ...RightsManage,
+  ...AllocationMethod,
 ];

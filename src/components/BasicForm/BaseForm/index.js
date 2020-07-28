@@ -3,7 +3,7 @@
  * @version:
  * @Author: big bug
  * @Date: 2019-11-19 10:39:54
- * @LastEditTime: 2020-07-23 11:02:35
+ * @LastEditTime: 2020-07-28 14:32:12
  */
 import React, {useImperativeHandle, useRef, forwardRef} from 'react';
 import { Form,Button } from 'antd';
@@ -27,6 +27,8 @@ function BaseForm(props, ref) {
     className,
     children,
     okText,
+    okTextType,
+    isReset = true,
     layout= 'horizontal',
     formLayout = layout === 'inline' ? null : formItemLayout,
     hideRequiredMark= false,
@@ -96,8 +98,8 @@ function BaseForm(props, ref) {
       }
       <Form.Item>
         <div className={styles['button-group']}>
-          <Button type="primary" htmlType="submit">{okText? okText : '查询'}</Button>
-          <Button onClick={()=>reset()}>重置</Button>
+          <Button type={okTextType ? okTextType : 'primary'} htmlType="submit">{okText? okText : '查询'}</Button>
+          {isReset && <Button onClick={()=>reset()}>重置</Button>}
           { children }
         </div>
       </Form.Item>

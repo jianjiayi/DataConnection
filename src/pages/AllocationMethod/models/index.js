@@ -3,12 +3,12 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-09 14:58:26
- * @LastEditTime: 2020-07-13 13:54:32
+ * @LastEditTime: 2020-07-28 14:39:58
  */ 
 import * as api from '../service/index.js';
 
 export default {
-  namespace: 'Rights',
+  namespace: 'Methods',
   
   state: {
     isLogin: false,
@@ -17,25 +17,21 @@ export default {
       // 数据源
       dataSource: [
         {
-          key: '1',
           name: 'John Brown',
           age: 32,
           address: 'New York No. 1 Lake Park',
         },
         {
-          key: '2',
           name: 'Jim Green',
           age: 42,
           address: 'London No. 1 Lake Park',
         },
         {
-          key: '3',
           name: 'Joe Black',
           age: 32,
           address: 'Sidney No. 1 Lake Park',
         },
         {
-          key: '4',
           name: 'Disabled User',
           age: 99,
           address: 'Sidney No. 1 Lake Park',

@@ -3,12 +3,12 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-09 14:58:26
- * @LastEditTime: 2020-07-16 16:55:12
+ * @LastEditTime: 2020-07-28 14:52:32
  */ 
 import * as api from '../service/index.js';
 
 export default {
-  namespace: 'Queue',
+  namespace: 'MTags',
   
   state: {
     isLogin: false,
@@ -17,24 +17,24 @@ export default {
       // 数据源
       dataSource: [
         {
-          id:'1',
-          title: '精品内容',
-          total: 25634,
+          name: 'John Brown',
+          age: 32,
+          address: 'New York No. 1 Lake Park',
         },
         {
-          id: '2',
-          title: '高危队列',
-          total: 25634,
+          name: 'Jim Green',
+          age: 42,
+          address: 'London No. 1 Lake Park',
         },
         {
-          id: '3',
-          title: '定制审核',
-          total: 25634,
+          name: 'Joe Black',
+          age: 32,
+          address: 'Sidney No. 1 Lake Park',
         },
         {
-          id: '4',
-          title: '去砸不净',
-          total: 25634,
+          name: 'Disabled User',
+          age: 99,
+          address: 'Sidney No. 1 Lake Park',
         },
       ],
       // 分页信息

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!--
  * @Descripttion: 
  * @version: 
@@ -32,3 +33,7 @@
 基于umi2.0搭建的react架构，支持dva&amp;antd，支持路由校验和配置，支持多环境打包
 # auditSystem
 内容审核系统：支持权限管理、队列审核.....
+=======
+# DataConnection
+CMS数据对接系统
+>>>>>>> dcf92982781f44b7d5f723a8563fccd2d44fc541

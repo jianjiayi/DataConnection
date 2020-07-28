@@ -3,7 +3,7 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-29 17:08:38
- * @LastEditTime: 2020-07-10 15:50:22
+ * @LastEditTime: 2020-07-28 11:32:31
  */ 
 import Link from 'umi/link';
 import { Button, Icon } from 'antd';
@@ -37,7 +37,7 @@ const Breadcrumbs = (props) => {
       <div className={classNames(styles.breadcrumbs)}>
         {breadcrumbs.map((breadcrumb, index) => (
           <span className={styles.item} key={breadcrumb.match.url}>
-            { index !== breadcrumbs.length-1 || breadcrumbs.length === 1 ?
+            { index !== breadcrumbs.length-1 ?
               <Link
                 to={{
                   pathname: breadcrumb.match.url,

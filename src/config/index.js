@@ -3,7 +3,7 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-01 14:15:45
- * @LastEditTime: 2020-07-21 16:36:16
+ * @LastEditTime: 2020-07-28 10:04:36
  */ 
 
 const type = process.env.BUILD_TYPE;
@@ -29,4 +29,4 @@ switch(type){
 
 export const BASEURL = URL;
 
-export const rootPathName = '/home'
+export const rootPathName = '/'
