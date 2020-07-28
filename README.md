@@ -1,10 +1,9 @@
-<<<<<<< HEAD
 <!--
  * @Descripttion: 
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-01 14:54:22
- * @LastEditTime: 2020-06-23 17:21:08
+ * @LastEditTime: 2020-07-28 15:11:39
 --> 
 ## 安装依赖
 + 在项目根目录先执行：yarn
@@ -31,9 +30,3 @@
 
 # umi-base-product
 基于umi2.0搭建的react架构，支持dva&amp;antd，支持路由校验和配置，支持多环境打包
-# auditSystem
-内容审核系统：支持权限管理、队列审核.....
-=======
-# DataConnection
-CMS数据对接系统
->>>>>>> dcf92982781f44b7d5f723a8563fccd2d44fc541
