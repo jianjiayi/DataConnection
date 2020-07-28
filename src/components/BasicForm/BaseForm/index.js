@@ -3,7 +3,7 @@
  * @version:
  * @Author: big bug
  * @Date: 2019-11-19 10:39:54
- * @LastEditTime: 2020-07-28 14:32:12
+ * @LastEditTime: 2020-07-28 17:23:49
  */
 import React, {useImperativeHandle, useRef, forwardRef} from 'react';
 import { Form,Button } from 'antd';
@@ -32,7 +32,7 @@ function BaseForm(props, ref) {
     layout= 'horizontal',
     formLayout = layout === 'inline' ? null : formItemLayout,
     hideRequiredMark= false,
-    form: { getFieldDecorator, setFieldsValue, resetFields, getFieldValue, getFieldsValue },
+    form: { getFieldDecorator, validateFields, setFieldsValue, resetFields, getFieldValue, getFieldsValue },
     dataSource= [],
     formValues= {},
     onSearch = ()=>{},
@@ -45,6 +45,7 @@ function BaseForm(props, ref) {
   useImperativeHandle(ref, () => ({
     getFieldValue,
     getFieldsValue,
+    validateFields,
     getFieldDecorator, 
     setFieldsValue, 
     resetFields,

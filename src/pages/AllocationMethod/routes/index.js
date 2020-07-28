@@ -3,9 +3,9 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-29 14:44:51
- * @LastEditTime: 2020-07-28 14:49:16
+ * @LastEditTime: 2020-07-28 17:09:01
  */ 
-import React, {useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
 import { InputNumber, Button, Tag, Input, Icon } from 'antd';
@@ -17,7 +17,16 @@ import styles from './index.module.less';
 
 function AllocationMethod(props) {
   
-  const {Methods: {table}} = props;
+  const {Methods: {loading, ...rest}, dispatch} = props;
+
+  // 加载触发函数
+  useEffect(()=>{
+    dispatch({
+      type:'Methods/queryArts',
+      payload:{}
+    })
+  },[dispatch]);
+
 
   // 搜索表单配置项
   const searchFormProps = {
@@ -95,7 +104,7 @@ function AllocationMethod(props) {
         }
       },
     ],
-    ...table,
+    ...rest,
   }
 
   

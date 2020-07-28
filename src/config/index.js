@@ -3,7 +3,7 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-01 14:15:45
- * @LastEditTime: 2020-07-28 10:04:36
+ * @LastEditTime: 2020-07-28 15:59:02
  */ 
 
 const type = process.env.BUILD_TYPE;
@@ -14,7 +14,7 @@ console.log(process.env)
 let URL = ''
 switch(type){
   case 'dev':
-    URL = 'http://dev.com';
+    URL = '';
     break;
   case 'test1':
     URL = 'http://test1.com';

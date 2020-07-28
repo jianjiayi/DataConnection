@@ -3,7 +3,7 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-01 15:51:25
- * @LastEditTime: 2020-07-28 14:53:33
+ * @LastEditTime: 2020-07-28 16:27:11
  */ 
 import React from 'react';
 import { connect } from 'dva';
@@ -39,12 +39,11 @@ function Login(props) {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        // console.log('Received values of form: ', values);
         dispatch({
           type: 'App/login',
-          payload: {},
+          payload: values,
           callback: (res) => {
-            console.log(res)
             router.push({pathname:'/'});
           }
         })
