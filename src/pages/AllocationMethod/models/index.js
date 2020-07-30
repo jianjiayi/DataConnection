@@ -3,7 +3,7 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-09 14:58:26
- * @LastEditTime: 2020-07-28 17:13:23
+ * @LastEditTime: 2020-07-30 10:19:29
  */ 
 import * as api from '../service/index.js';
 
@@ -11,7 +11,12 @@ export default {
   namespace: 'Methods',
   
   state: {
+    // loading状态
     loading: true,
+    // 查询条件
+    query: {},
+    // 关键词
+    keywords: [],
     // 文章列表
     dataSource: [
       {
@@ -47,39 +52,74 @@ export default {
   },
 
   effects: {
+    // 初始化
+    *init({payload}, {call, put}){
+      yield put({type: 'getKeywords'});
+      yield put({type: 'getPvdataList'})
+    },
+    // 获取关键词列表
+    *getKeywords({payload}, {call, put, select}){
+      const data = yield call(api.getKeywords, payload);
+      if(data.code == 0){
+        yield put({
+          type: 'save',
+          payload: {
+            loading: false,
+            keywords: data.keywords,
+          }
+        });
+      }
+    },
+    // 设置关键词
+    *updateKeywords({payload, callback}, {call, put, select}){
+      const data = yield call(api.updateKeywords, payload);
+      if(data.code == 0){
+        callback()
+      }
+    },
     // 获取文章列表
-    *queryArts({ payload }, { call, put, select}){
-      const {pagination} = yield select(({Methods}) => Methods);
-      const query = {
-          pageNumber: 1,
-          pageSize: pagination.pageSize,
-          ...payload,
+    *getPvdataList({ payload }, { call, put, select}){
+      const {query, pagination} = yield select(({Methods}) => Methods);
+
+      const params = {
+        ...query,
+        pageNo: 1,
+        pageSize: pagination.pageSize,
+        ...payload,
       };
-      const {code, data} = yield call(api.queryArts, query);
+
+      const data = yield call(api.getPvdataList, params);
       // console.log(data)
-      if(code === 0) {
+      if(data.code === 0) {
         yield put({
             type: 'save',
             payload: {
-                loading: false,
-                dataSource: data.list || [],
-                pagination: {
-                  ...pagination,
-                  total: data.pager.recordCount,
-                  current: data.pager.pageNumber,
-                  pageSize: data.pager.pageSize
-                }
+              loading: false,
+              query: params,
+              dataSource: data.data || [],
+              pagination: {
+                ...pagination,
+                total: data.totalCount,
+                current: data.pageNo,
+                pageSize: data.pageSize
+              }
             }
         });
       }
     },
     // 确认提交
-    *okSubmit({ payload }, { call, put}){
-
+    *commitPvdata({ payload, callback }, { call, put}){
+      const {code, data} = yield call(api.commitPvdata, payload);
+      if(code == 0){
+        callback()
+      }
     },
     // 导出Excel
-    *downloadExcel({ payload }, { call, put}){
-
+    *downloadExcel({ payload, callback }, { call, put}){
+      const {code, data} = yield call(api.queryArts, payload);
+      if(code === 0){
+        callback(data)
+      }
     }
   },
 

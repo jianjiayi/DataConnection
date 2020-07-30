@@ -3,7 +3,7 @@
  * @version:
  * @Author: big bug
  * @Date: 2019-11-19 10:39:54
- * @LastEditTime: 2020-07-28 17:23:49
+ * @LastEditTime: 2020-07-29 09:27:11
  */
 import React, {useImperativeHandle, useRef, forwardRef} from 'react';
 import { Form,Button } from 'antd';
@@ -36,6 +36,7 @@ function BaseForm(props, ref) {
     dataSource= [],
     formValues= {},
     onSearch = ()=>{},
+    onReset = () => {},
     renderItem= renderFormItem,
   } = props;
 
@@ -79,6 +80,7 @@ function BaseForm(props, ref) {
    */
   const reset = () => {
     resetFields();
+    onReset();
   };
 
 

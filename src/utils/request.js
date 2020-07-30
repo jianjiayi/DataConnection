@@ -2,7 +2,7 @@ import { notification, message} from 'antd';
 import router from 'umi/router';
 import { BASEURL } from '@/config';
 
-console.log(BASEURL)
+// console.log(BASEURL)
 const fetch = require('dva').fetch;
 
 
@@ -46,9 +46,9 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
-  console.log(BASEURL)
+  // console.log(BASEURL)
   const defaultOptions = {
-    credentials: 'include',
+    // credentials: 'include', // 允许 cookie 共享，跨域问题，传Cookie是必须配置, 不传递Cookie时，不允许配置credentials
   };
   const newOptions = { ...defaultOptions, ...options };
   if (newOptions.method === 'POST' || newOptions.method === 'PUT') {

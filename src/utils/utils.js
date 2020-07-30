@@ -3,7 +3,7 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-07-24 10:51:22
- * @LastEditTime: 2020-07-24 14:12:11
+ * @LastEditTime: 2020-07-29 09:09:49
  */ 
  
 // 数组去重
@@ -60,4 +60,12 @@ export const listIntersection = (x, y) =>{
     }
   }
   return listRemoveRepeat(result);
+}
+
+// 判断时间间隔多少小时
+export const judgeTimeDiffer = (startTime,endTime) =>{
+    var startTime =new Date(startTime.replace("//-/g", "//"));
+    var endTime = new Date(endTime.replace("//-/g", "//"));
+ 
+    return parseInt((startTime.getTime() - endTime.getTime()) / 1000 / 60 / 60);
 }
