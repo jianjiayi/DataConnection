@@ -3,7 +3,7 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-09 14:58:26
- * @LastEditTime: 2020-07-30 10:19:29
+ * @LastEditTime: 2020-07-30 15:18:39
  */ 
 import * as api from '../service/index.js';
 
@@ -17,29 +17,10 @@ export default {
     query: {},
     // 关键词
     keywords: [],
+    // 时间限制
+    lastUpdateTime: '',
     // 文章列表
-    dataSource: [
-      {
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-      },
-      {
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-      },
-      {
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-      },
-      {
-        name: 'Disabled User',
-        age: 99,
-        address: 'Sidney No. 1 Lake Park',
-      },
-    ],
+    dataSource: [],
     // 分页信息
     pagination: {
       showSizeChanger: true,
@@ -66,6 +47,7 @@ export default {
           payload: {
             loading: false,
             keywords: data.keywords,
+            lastUpdateTime: data.updateTime
           }
         });
       }
@@ -74,7 +56,7 @@ export default {
     *updateKeywords({payload, callback}, {call, put, select}){
       const data = yield call(api.updateKeywords, payload);
       if(data.code == 0){
-        callback()
+        callback(data)
       }
     },
     // 获取文章列表
@@ -107,20 +89,27 @@ export default {
         });
       }
     },
-    // 确认提交
-    *commitPvdata({ payload, callback }, { call, put}){
-      const {code, data} = yield call(api.commitPvdata, payload);
-      if(code == 0){
-        callback()
-      }
-    },
-    // 导出Excel
-    *downloadExcel({ payload, callback }, { call, put}){
-      const {code, data} = yield call(api.queryArts, payload);
-      if(code === 0){
+    // 更新pv
+    *updatePv({ payload, callback }, { call, put}){
+      const data = yield call(api.updatePvdata, payload);
+      if(data.code == 0){
         callback(data)
       }
-    }
+    },
+    // 确认提交
+    *commitPvdata({ payload, callback }, { call, put}){
+      const data = yield call(api.commitPvdata, payload);
+      if(data.code == 0){
+        // 更新当前列表
+        yield put({
+          type: 'getPvdataList',
+          payload: {}
+        });
+
+        
+        callback(data);
+      }
+    },
   },
 
   reducers: {

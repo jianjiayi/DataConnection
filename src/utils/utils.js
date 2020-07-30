@@ -3,7 +3,7 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-07-24 10:51:22
- * @LastEditTime: 2020-07-29 09:09:49
+ * @LastEditTime: 2020-07-30 15:42:56
  */ 
  
 // 数组去重
@@ -64,8 +64,38 @@ export const listIntersection = (x, y) =>{
 
 // 判断时间间隔多少小时
 export const judgeTimeDiffer = (startTime,endTime) =>{
-    var startTime =new Date(startTime.replace("//-/g", "//"));
-    var endTime = new Date(endTime.replace("//-/g", "//"));
- 
-    return parseInt((startTime.getTime() - endTime.getTime()) / 1000 / 60 / 60);
+  var startTime =new Date(startTime.replace("//-/g", "//"));
+  var endTime = new Date(endTime.replace("//-/g", "//"));
+
+  return parseInt((startTime.getTime() - endTime.getTime()) / 1000 / 60 / 60);
+}
+
+// 获取当前时间 2020-07-30 15:42:31
+export const curentTime = () =>{ 
+  var date = new Date();
+  var year = date.getFullYear(),
+      month = ("0" + (date.getMonth() + 1)).slice(-2),
+      sdate = ("0" + date.getDate()).slice(-2),
+      hour = ("0" + date.getHours()).slice(-2),
+      minute = ("0" + date.getMinutes()).slice(-2),
+      second = ("0" + date.getSeconds()).slice(-2);
+  // 拼接
+  var result = year + "-"+ month +"-"+ sdate +" "+ hour +":"+ minute +":" + second;
+  // 返回
+  return result;
+}
+
+// 获取参数
+export const getParams = (obj) =>{
+  let result = '';
+  let item;
+  for (item in obj) {
+    if (obj[item] && String(obj[item])) {
+      result += `&${item}=${obj[item]}`;
+    }
+  }
+  if (result) {
+    result = '?' + result.slice(1);
+  }
+  return result;
 }

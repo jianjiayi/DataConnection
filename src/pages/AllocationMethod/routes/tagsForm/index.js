@@ -3,7 +3,7 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-29 14:44:51
- * @LastEditTime: 2020-07-30 10:18:46
+ * @LastEditTime: 2020-07-30 15:45:48
  */ 
  
 import React, {useState, useEffect, useRef} from 'react';
@@ -11,26 +11,21 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import { message, Modal, Button, Tag, Input, Icon } from 'antd';
 import { BaseForm } from '@components/BasicForm';
-import { judgeTimeDiffer } from '@utils/utils';
+import { curentTime, judgeTimeDiffer } from '@utils/utils';
 import { validateTextLength } from '@utils/validate.js';
+import _ from 'lodash';
 
 import styles from './index.module.less';
 
 const { confirm } = Modal;
 
+let keywordsArr = []
+
 function TagsForm(props) {
-  const {Methods: {keywords}, dispatch} = props;
-  console.log('keywords',keywords)
+  const {Methods: {keywords,lastUpdateTime}, dispatch} = props;
 
   const tagsRef = useRef(null);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [TagsList, setTagsList] = useState([]);
-
-  useEffect(()=>{
-    setTagsList(TagsList=>{
-      return keywords
-    })
-  }, [keywords])
 
   const tagsFormProps = {
     className: styles['tags-form'],
@@ -65,39 +60,44 @@ function TagsForm(props) {
       let tags = formValues.tags;
       
       // 判断关键词数量
-      if(TagsList.length>15){
+      if(keywords.length>15){
         return message.error('关键词数量已达到15个，无法继续添加！');
       }
       
       // 判断是否存在该关键词
-      let isExist = TagsList.find((v)=>{
+      let isExist = keywords.find((v)=>{
         return v == tags;
       })
       if(isExist){
         return message.error('该关键词已被创建');
       };
       
-      setTagsList([...TagsList, tags]);
+      dispatch({
+        type: 'Methods/save',
+        payload:{
+          keywords: [...keywords, tags]
+        }
+      })
     }
   }
 
   // 删除关键词
   const handleTagClose = removedTag =>{
-    console.log('removedTag',removedTag)
-    TagsList.splice(TagsList.findIndex(tag =>  tag == removedTag), 1);
-    setTagsList(TagsList);
-    console.log('TagsList',TagsList)
-
-    // setTagsList(TagsList => {
-    //   let arr = JSON.parse(JSON.stringify(TagsList));
-    //   console.log(arr.filter((tag,index) => tag != removedTag))
-    //   return arr.filter((tag,index) => tag != removedTag)
-    // });
-    // console.log('TagsList',TagsList)
+    let tags = _.cloneDeep(keywords);
+    _.pull(tags, removedTag);
+    dispatch({
+      type: 'Methods/save',
+      payload:{keywords: tags}
+    })
   }
 
   // 提交关键词
   const handleSubmitTags = (content) =>{
+    if(judgeTimeDiffer(curentTime(),lastUpdateTime) < 24){
+      message.warning('24小时内已经提交过，不能再次提交');
+      return;
+    }
+
     confirm({
       title: '温馨提示',
       content: '提交关键词后本日将无法修改，是否确定',
@@ -106,7 +106,7 @@ function TagsForm(props) {
       cancelText: '取消',
       onOk() {
         // console.log('OK');
-        if(TagsList.length == 0){
+        if(keywords.length == 0){
           return message.error('请添加关键词后在提交');
         }
 
@@ -114,8 +114,9 @@ function TagsForm(props) {
 
         dispatch({
           type: 'Methods/updateKeywords',
-          payload: TagsList,
+          payload: keywords,
           callback: (res) => {
+            message.success('提交关键词成功');
             setSubmitLoading(false);
           }
         })
@@ -130,9 +131,9 @@ function TagsForm(props) {
         <BaseForm {...tagsFormProps} wrappedComponentRef={tagsRef}></BaseForm>
         <div className={styles.tags_list}>
           {
-            TagsList.map((item, index)=>{
-              console.log(item)
-              return <Tag key={index} closable onClose={() => handleTagClose(item)}>{item}</Tag>
+            keywords.map((item, index)=>{
+              // console.log(item)
+              return <Tag key={index+item} closable onClose={() => handleTagClose(item)}>{item}</Tag>
             })
           }
         </div>

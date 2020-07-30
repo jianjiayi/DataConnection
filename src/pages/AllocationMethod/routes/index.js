@@ -3,23 +3,25 @@
  * @version: 
  * @Author: big bug
  * @Date: 2020-06-29 14:44:51
- * @LastEditTime: 2020-07-30 10:10:02
+ * @LastEditTime: 2020-07-30 14:30:20
  */ 
 import React, {useState, useEffect, useRef} from 'react';
 import { connect } from 'dva';
-import router from 'umi/router';
 import {message, InputNumber, Button, Tag, Input, Icon } from 'antd';
 import { BaseForm } from '@components/BasicForm';
 import { BaseTable } from '@components/BasicTable';
 import TagsForm from './tagsForm';
-import { judgeTimeDiffer } from '@utils/utils';
+import { getParams, judgeTimeDiffer } from '@utils/utils';
+import { BASEURL } from '@/config';
+
+import _ from 'lodash';
 
 import styles from './index.module.less';
 
 function AllocationMethod(props) {
   
-  const {Methods: {loading, ...rest}, dispatch} = props;
-  
+  const {Methods: {loading, query, dataSource, ...rest}, dispatch} = props;
+  const formRef = useRef(null);
   const [submitLoading, setSubmitLoading] = useState(false);
 
   // 加载触发函数
@@ -42,7 +44,7 @@ function AllocationMethod(props) {
       { label: '新闻标题', name: 'title'},
     ],
     onSearch: (formValues) =>{
-      console.log('formValues', formValues);
+      // console.log('formValues', formValues);
       dispatch({
         type: 'Methods/getPvdataList',
         payload: formValues
@@ -93,9 +95,8 @@ function AllocationMethod(props) {
         title: '访问量',
         align: 'center',
         width: '250px',
-        dataIndex: 'finalPv',
         render(r){
-          return (<InputNumber style={{'width': '100%'}} min={0} value={r}/>)
+          return (<InputNumber style={{'width': '100%'}} min={0} defaultValue={r.finalPv} onChange={value=>onChangePv(value, r.id)}/>)
         }
       },
       {
@@ -103,7 +104,8 @@ function AllocationMethod(props) {
         width: '100px',
         align: 'center',
         render(r) {
-          return (<Button type="link" size="small"onClick={()=>{console.log(r)}}>修改</Button>);
+          // console.log(r)
+          return (<Button type="link" size="small"onClick={()=>updatePv(r)}>修改</Button>);
         }
       },
     ],
@@ -117,16 +119,44 @@ function AllocationMethod(props) {
         }
       })
     },
+    dataSource,
     ...rest,
+  }
+
+  // 更新store中的某条id的pv
+  const onChangePv = (value, id) => {
+    let tableList = _.cloneDeep(dataSource);
+    const index = tableList.findIndex(item => id == item.id);
+    const item = tableList[index];
+    tableList.splice(index, 1, {
+      ...item,
+      ...{finalPv: value}
+    });
+    dispatch({
+      type: 'Methods/save',
+      payload:{dataSource: tableList}
+    })
+  }
+
+  // 修改pv
+  const updatePv = (r) =>{
+    // console.log(r)
+    dispatch({
+      type: 'Methods/updatePv',
+      payload:{
+        id: r.id,
+        pv: r.finalPv
+      },
+      callback: (res)=>{
+        message.success('更新pv成功');
+      }
+    })
   }
 
   // 确认提交
   const commitPvdata = () =>{
-    if(true){
-      
-    }
-
     setSubmitLoading(true);
+
     dispatch({
       type: 'Methods/commitPvdata',
       payload: {},
@@ -139,13 +169,16 @@ function AllocationMethod(props) {
 
   // 下载excel文件
   const downloadExcel = () => {
-    dispatch({
-      type: 'Methods/downloadExcel',
-      payload: {},
-      callback: (res) =>{
-        window.open("https://codeload.github.com/douban/douban-client/legacy.zip/master");
-      }
-    })
+    // 相关参数
+    let formData = {
+      contentId: query.contentId,
+      title: query.title
+    };
+    // 执行下载
+    let key = 'exportExcel';
+    message.loading({ content: '正在导出Excel表格，请稍等...', key});
+    message.success({ content: 'Excel导出成功，正在下载...', key, duration: 2 })
+    window.open(`${BASEURL}/pvdata/exportExcel${getParams(formData)}`);
   }
 
   
@@ -154,7 +187,7 @@ function AllocationMethod(props) {
       <TagsForm></TagsForm>
       
       <div className={styles['search-form-box']}>
-        <BaseForm {...searchFormProps}></BaseForm>
+        <BaseForm {...searchFormProps} wrappedComponentRef={ formRef }></BaseForm>
         <div className={styles.btn_group}>
           <Button type="primary" loading={submitLoading} onClick={()=>commitPvdata()}>确认提交</Button>
           <Button type="link" onClick={()=>downloadExcel()}>导出Excel</Button>
